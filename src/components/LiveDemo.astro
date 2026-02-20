@@ -1,0 +1,44 @@
+<div class="p-8 bg-slate-900 border border-indigo-500/30 rounded-2xl">
+  <h3 class="text-xl font-bold text-white mb-4">Python Serverless Demo</h3>
+  <textarea 
+    id="python-input" 
+    class="w-full bg-slate-800 border border-slate-700 p-4 rounded-lg text-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none"
+    placeholder="Type something here to analyze with Python..."
+  ></textarea>
+  
+  <button 
+    id="analyze-btn" 
+    class="mt-4 px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-bold transition"
+  >
+    Run Python Logic
+  </button>
+
+  <div id="result" class="mt-6 hidden p-4 bg-slate-950 rounded border border-slate-800 font-mono text-sm text-emerald-400">
+    </div>
+</div>
+
+<script>
+  const btn = document.getElementById('analyze-btn');
+  const input = document.getElementById('python-input');
+  const resultDiv = document.getElementById('result');
+
+  btn.addEventListener('click', async () => {
+    btn.innerText = "Processing...";
+    
+    // Call the Netlify Python Function
+    const response = await fetch('/.netlify/functions/process_data', {
+      method: 'POST',
+      body: JSON.stringify({ text: input.value })
+    });
+
+    const data = await response.json();
+    
+    resultDiv.classList.remove('hidden');
+    resultDiv.innerHTML = `
+      <p>> Result: ${data.message}</p>
+      <p>> Words: ${data.stats.words}</p>
+      <p>> Python-like: ${data.stats.is_code ? 'Yes' : 'No'}</p>
+    `;
+    btn.innerText = "Run Python Logic";
+  });
+</script>

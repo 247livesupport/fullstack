@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.glass-card {
+  background: color-mix(in srgb, var(--color-slate-900) 40%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+}
